@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive & Accessible Landing Page</title>
+
+    <style>
+        /* 1. Global Setup & Smooth Scroll */
+        html {
+            scroll-behavior: smooth; /* The magic line for smooth scrolling */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* 2. Basic Layout (Mobile-First) */
+        .page-section {
+            padding: 2rem 1rem;
+            min-height: 70vh; /* Give sections some height */
+            border-bottom: 1px solid #ddd;
+        }
+
+        .page-section:nth-of-type(odd) {
+            background-color: #fff;
+        }
+
+        /* Center content */
+        .page-section h1,
+        .page-section h2,
+        .page-section p {
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 3. Form Styling */
+        .form-group {
+            margin-bottom: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding doesn't break width */
+        }
+
+        /* 4. Validation Styling (Hidden by default) */
+        .error-message {
+            color: #d93025;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+            display: none; /* We will show this with JS */
+        }
+
+        /* This class will be added by JavaScript */
+        .form-group input.is-invalid,
+        .form-group textarea.is-invalid {
+            border-color: #d93025;
+        }
+
+        .form-group .error-message.is-visible {
+            display: block;
+        }
+
+        #form-status {
+            margin-bottom: 1rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .status-success {
+            color: green;
+        }
+
+        .status-error {
+            color: #d93025;
+        }
+
+
+        /* 5. Responsive Breakpoint (for tablets and up) */
+        @media (min-width: 768px) {
+            .page-section {
+                padding: 4rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <nav class="site-nav">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="page-section">
+            <h1>Welcome to Our Site</h1>
+            <p>This is the main landing area.</p>
+        </section>
+
+        <section id="about" class="page-section">
+            <h2>About Us</h2>
+            <p>We are a team dedicated to making the web accessible.</p>
+        </section>
+
+        <section id="contact" class="page-section">
+            <h2>Contact Us</h2>
+            <p>Send us a message, and we'll get back to you.</p>
+            
+            <form id="contact-form" novalidate>
+    
+                <div id="form-status" role="status" aria-live="polite"></div>
+            
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        required
+                        aria-describedby="name-error"
+                        aria-invalid="false">
+                    <div id="name-error" class="error-message" role="alert"></div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required
+                        aria-describedby="email-error"
+                        aria-invalid="false">
+                    <div id="email-error" class="error-message" role="alert"></div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        rows="5" 
+                        required
+                        aria-describedby="message-error"
+                        aria-invalid="false"></textarea>
+                    <div id="message-error" class="error-message" role="alert"></div>
+                </div>
+            
+                <button type="submit" class="btn-submit">Send Message</button>
+            </form>
+            
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Your Company. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Wait for the DOM to be fully loaded before running the script
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const form = document.getElementById('contact-form');
+            const formStatus = document.getElementById('form-status');
+
+            // Helper function to show an error message
+            function showError(input, message) {
+                const formGroup = input.parentElement;
+                const errorEl = formGroup.querySelector('.error-message');
+                
+                errorEl.textContent = message;
+                errorEl.classList.add('is-visible'); // Show the error message
+                
+                input.classList.add('is-invalid'); // Add red border
+                input.setAttribute('aria-invalid', 'true');
+                input.setAttribute('aria-describedby', errorEl.id); // Link error to input
+            }
+
+            // Helper function to clear an error message
+            function clearError(input) {
+                const formGroup = input.parentElement;
+                const errorEl = formGroup.querySelector('.error-message');
+                
+                errorEl.textContent = '';
+                errorEl.classList.remove('is-visible'); // Hide the error message
+                
+                input.classList.remove('is-invalid'); // Remove red border
+                input.setAttribute('aria-invalid', 'false');
+            }
+
+            // Helper function to validate email format
+            function isValidEmail(email) {
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return regex.test(email);
+            }
+
+            // The main validation function
+            function validateForm() {
+                let isValid = true;
+                
+                // Get all fields that need validation
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const messageInput = document.getElementById('message');
+
+                // Clear all previous errors
+                clearError(nameInput);
+                clearError(emailInput);
+                clearError(messageInput);
+                formStatus.textContent = '';
+                formStatus.className = '';
+
+                // --- Start Validation ---
+                
+                // 1. Check Name
+                if (nameInput.value.trim() === '') {
+                    showError(nameInput, 'Name is required.');
+                    isValid = false;
+                }
+
+                // 2. Check Email
+                if (emailInput.value.trim() === '') {
+                    showError(emailInput, 'Email is required.');
+                    isValid = false;
+                } else if (!isValidEmail(emailInput.value.trim())) {
+                    showError(emailInput, 'Please enter a valid email address.');
+                    isValid = false;
+                }
+
+                // 3. Check Message
+                if (messageInput.value.trim() === '') {
+                    showError(messageInput, 'Message is required.');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+
+
+            // --- The Event Listener ---
+            // This is where the "smooth" validation happens.
+            form.addEventListener('submit', (event) => {
+                
+                // 1. Prevent the default form submission (the page reload)
+                event.preventDefault(); 
+                
+                // 2. Run our validation
+                const isFormValid = validateForm();
+
+                // 3. Handle the result
+                if (isFormValid) {
+                    // SUCCESS!
+                    formStatus.textContent = 'Thank you! Your message has been sent.';
+                    formStatus.classList.add('status-success');
+                    
+                    // In a real application, you would now send the data to a server
+                    // using the Fetch API. For this demo, we'll just log
+                    // to console and reset the form.
+                    
+                    console.log('Form is valid. Submitting data (simulated)...');
+                    console.log({
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        message: document.getElementById('message').value
+                    });
+                    
+                    form.reset(); // Clear the form fields
+
+                } else {
+                    // FAILURE!
+                    formStatus.textContent = 'Please correct the errors below.';
+                    formStatus.classList.add('status-error');
+
+                    // For accessibility, focus the first invalid input
+                    const firstInvalidInput = form.querySelector('.is-invalid');
+                    if (firstInvalidInput) {
+                        firstInvalidInput.focus();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
