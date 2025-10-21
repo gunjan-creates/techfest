@@ -3,79 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive & Accessible Landing Page</title>
+    <title>Dynamic & Animated Landing Page</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* 1. Global Setup & Smooth Scroll */
+        /* 1. Root Variables (New Color Palette) */
+        :root {
+            --primary-color: #0a192f;  /* Dark Navy Blue */
+            --secondary-color: #f5f5f5; /* Light Gray / White */
+            --accent-color: #64ffda;   /* Bright Mint */
+            --text-primary: #ccd6f6;   /* Light Slate */
+            --text-secondary: #8892b0; /* Slate */
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --accent-rgb: 100, 255, 218;
+        }
+
+        /* 2. Global Setup & Smooth Scroll */
         html {
-            scroll-behavior: smooth; /* The magic line for smooth scrolling */
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Open Sans', sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: var(--primary-color);
+            color: var(--text-secondary);
         }
 
-        /* 2. Basic Layout (Mobile-First) */
+        /* 3. Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-primary);
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        /* Decorative line for headings */
+        h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background: var(--accent-color);
+            margin-top: 8px;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            max-width: 650px;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+
+        /* 4. Responsive Header & Navigation */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(10, 25, 47, 0.85); /* Semi-transparent navy */
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(48, 60, 85, 0.5);
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hamburger Menu Button */
+        .menu-toggle {
+            display: none; /* Hidden on desktop */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .menu-toggle .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--accent-color);
+            transition: all 0.3s ease-in-out;
+        }
+
+
+        /* 5. Page Sections & Layout */
         .page-section {
-            padding: 2rem 1rem;
-            min-height: 70vh; /* Give sections some height */
-            border-bottom: 1px solid #ddd;
+            padding: 6rem 2rem;
+            min-height: 80vh;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-bottom: 1px solid rgba(48, 60, 85, 0.5);
         }
 
-        .page-section:nth-of-type(odd) {
-            background-color: #fff;
+        #home {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-
-        /* Center content */
-        .page-section h1,
-        .page-section h2,
-        .page-section p {
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        
+        #home h1 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
         }
-
-        /* 3. Form Styling */
+        
+        #home p {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+        }
+        
+        /* 6. Form Styling */
         .form-group {
-            margin-bottom: 1rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            font-weight: bold;
-            margin-bottom: 0.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 0.5rem;
+            padding: 0.75rem 1rem;
             font-size: 1rem;
-            border: 1px solid #ccc;
+            font-family: 'Open Sans', sans-serif;
+            border: 2px solid var(--text-secondary);
             border-radius: 4px;
-            box-sizing: border-box; /* Ensures padding doesn't break width */
+            box-sizing: border-box; 
+            background-color: #112240; /* Darker input background */
+            color: var(--text-primary);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* 4. Validation Styling (Hidden by default) */
+        /* Focus Animation */
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.2);
+        }
+
+
+        /* 7. Button Styling & Animation */
+        .btn-submit {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 2.5s infinite ease-in-out;
+        }
+
+        .btn-submit:hover,
+        .btn-submit:focus {
+            background-color: rgba(var(--accent-rgb), 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(var(--accent-rgb), 0.1);
+            animation-play-state: paused; /* Pause pulse on hover */
+        }
+        
+        /* Pulse Animation */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0);
+            }
+        }
+
+
+        /* 8. Validation & Status Styling */
         .error-message {
-            color: #d93025;
+            color: #ff6b6b; /* Brighter red for dark background */
             font-size: 0.9rem;
             margin-top: 0.25rem;
-            display: none; /* We will show this with JS */
+            display: none;
         }
 
-        /* This class will be added by JavaScript */
         .form-group input.is-invalid,
         .form-group textarea.is-invalid {
-            border-color: #d93025;
+            border-color: #ff6b6b;
         }
 
         .form-group .error-message.is-visible {
@@ -84,56 +251,107 @@
 
         #form-status {
             margin-bottom: 1rem;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 1.1rem;
         }
 
         .status-success {
-            color: green;
+            color: #64ffda; /* Accent color for success */
         }
 
         .status-error {
-            color: #d93025;
+            color: #ff6b6b; /* Red for error */
+        }
+        
+        
+        /* 9. Scroll Fade-in Animation */
+        .hidden-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .hidden-section.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
 
-        /* 5. Responsive Breakpoint (for tablets and up) */
-        @media (min-width: 768px) {
-            .page-section {
-                padding: 4rem 2rem;
+        /* 10. Responsive Breakpoint (Mobile) */
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+            
+            .nav-links {
+                display: none; /* Hide nav links by default */
+                position: absolute;
+                top: 70px; /* Height of the header */
+                left: 0;
+                width: 100%;
+                background-color: var(--primary-color);
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+                box-shadow: 0 10px 10px var(--shadow-color);
+            }
+            
+            /* This class is toggled by JS */
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block; /* Show hamburger button */
+            }
+
+            /* Hamburger "X" animation */
+            .menu-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-toggle.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            .menu-toggle.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
             }
         }
+        
     </style>
 </head>
 <body>
 
     <header class="site-header">
-        <nav class="site-nav">
-            <ul>
+        <div class="logo">MySite</div>
+        <nav>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
     </header>
 
     <main>
-        <section id="home" class="page-section">
-            <h1>Welcome to Our Site</h1>
-            <p>This is the main landing area.</p>
+        <section id="home" class="page-section hidden-section">
+            <h1>Dynamic & Animated</h1>
+            <p>Welcome to a more attractive and responsive single-page site. Scroll down to see the animations.</p>
         </section>
 
-        <section id="about" class="page-section">
+        <section id="about" class="page-section hidden-section">
             <h2>About Us</h2>
-            <p>We are a team dedicated to making the web accessible.</p>
+            <p>We are a team dedicated to making the web accessible, responsive, and beautiful. This page demonstrates modern front-end techniques including CSS animations, transitions, and JavaScript-powered interactivity.</p>
         </section>
 
-        <section id="contact" class="page-section">
+        <section id="contact" class="page-section hidden-section">
             <h2>Contact Us</h2>
             <p>Send us a message, and we'll get back to you.</p>
             
             <form id="contact-form" novalidate>
-    
                 <div id="form-status" role="status" aria-live="polite"></div>
             
                 <div class="form-group">
@@ -178,73 +396,95 @@
         </section>
     </main>
 
-    <footer class="site-footer">
-        <p>&copy; 2025 Your Company. All rights reserved.</p>
-    </footer>
-
     <script>
-        // Wait for the DOM to be fully loaded before running the script
         document.addEventListener('DOMContentLoaded', () => {
 
+            // --- 1. Responsive Hamburger Menu ---
+            const menuToggle = document.getElementById('menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+            });
+
+            // Close mobile menu when a link is clicked
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                });
+            });
+
+            
+            // --- 2. Scroll-in Animations ---
+            const hiddenSections = document.querySelectorAll('.hidden-section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        // Optional: Stop observing after it's shown
+                        // observer.unobserve(entry.target);
+                    } else {
+                        // Optional: Remove 'show' to re-animate on scroll up
+                        entry.target.classList.remove('show');
+                    }
+                });
+            }, {
+                threshold: 0.15 // Trigger when 15% of the section is visible
+            });
+
+            hiddenSections.forEach((section) => {
+                observer.observe(section);
+            });
+
+
+            // --- 3. Accessible Form Validation (from previous step) ---
             const form = document.getElementById('contact-form');
             const formStatus = document.getElementById('form-status');
 
-            // Helper function to show an error message
             function showError(input, message) {
                 const formGroup = input.parentElement;
                 const errorEl = formGroup.querySelector('.error-message');
-                
                 errorEl.textContent = message;
-                errorEl.classList.add('is-visible'); // Show the error message
-                
-                input.classList.add('is-invalid'); // Add red border
+                errorEl.classList.add('is-visible');
+                input.classList.add('is-invalid');
                 input.setAttribute('aria-invalid', 'true');
-                input.setAttribute('aria-describedby', errorEl.id); // Link error to input
+                input.setAttribute('aria-describedby', errorEl.id);
             }
 
-            // Helper function to clear an error message
             function clearError(input) {
                 const formGroup = input.parentElement;
                 const errorEl = formGroup.querySelector('.error-message');
-                
                 errorEl.textContent = '';
-                errorEl.classList.remove('is-visible'); // Hide the error message
-                
-                input.classList.remove('is-invalid'); // Remove red border
+                errorEl.classList.remove('is-visible');
+                input.classList.remove('is-invalid');
                 input.setAttribute('aria-invalid', 'false');
             }
 
-            // Helper function to validate email format
             function isValidEmail(email) {
                 const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return regex.test(email);
             }
 
-            // The main validation function
             function validateForm() {
                 let isValid = true;
-                
-                // Get all fields that need validation
                 const nameInput = document.getElementById('name');
                 const emailInput = document.getElementById('email');
                 const messageInput = document.getElementById('message');
 
-                // Clear all previous errors
                 clearError(nameInput);
                 clearError(emailInput);
                 clearError(messageInput);
                 formStatus.textContent = '';
                 formStatus.className = '';
 
-                // --- Start Validation ---
-                
-                // 1. Check Name
                 if (nameInput.value.trim() === '') {
                     showError(nameInput, 'Name is required.');
                     isValid = false;
                 }
 
-                // 2. Check Email
                 if (emailInput.value.trim() === '') {
                     showError(emailInput, 'Email is required.');
                     isValid = false;
@@ -253,7 +493,6 @@
                     isValid = false;
                 }
 
-                // 3. Check Message
                 if (messageInput.value.trim() === '') {
                     showError(messageInput, 'Message is required.');
                     isValid = false;
@@ -262,26 +501,13 @@
                 return isValid;
             }
 
-
-            // --- The Event Listener ---
-            // This is where the "smooth" validation happens.
             form.addEventListener('submit', (event) => {
-                
-                // 1. Prevent the default form submission (the page reload)
                 event.preventDefault(); 
-                
-                // 2. Run our validation
                 const isFormValid = validateForm();
 
-                // 3. Handle the result
                 if (isFormValid) {
-                    // SUCCESS!
                     formStatus.textContent = 'Thank you! Your message has been sent.';
                     formStatus.classList.add('status-success');
-                    
-                    // In a real application, you would now send the data to a server
-                    // using the Fetch API. For this demo, we'll just log
-                    // to console and reset the form.
                     
                     console.log('Form is valid. Submitting data (simulated)...');
                     console.log({
@@ -290,14 +516,11 @@
                         message: document.getElementById('message').value
                     });
                     
-                    form.reset(); // Clear the form fields
+                    form.reset(); 
 
                 } else {
-                    // FAILURE!
                     formStatus.textContent = 'Please correct the errors below.';
                     formStatus.classList.add('status-error');
-
-                    // For accessibility, focus the first invalid input
                     const firstInvalidInput = form.querySelector('.is-invalid');
                     if (firstInvalidInput) {
                         firstInvalidInput.focus();
